@@ -26,6 +26,7 @@ input CreateTransactionInput {
 input CreateUserInput {
   email: String!
   name: String!
+  role: String
 }
 
 """
@@ -109,6 +110,7 @@ input UpdateTransactionInput {
 
 input UpdateUserInput {
   name: String
+  role: String
 }
 
 type UserModel {
@@ -117,5 +119,6 @@ type UserModel {
   id: ID!
   name: String!
   password: String
+  role: String!
   updatedAt: DateTimeISO!
 }

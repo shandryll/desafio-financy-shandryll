@@ -14,6 +14,7 @@ export class UserService {
       data: {
         name: data.name,
         email: data.email,
+        role: data.role ?? "USER",
       },
     });
   }
@@ -42,6 +43,7 @@ export class UserService {
       where: { id },
       data: {
         name: data.name ?? undefined,
+        role: data.role ?? undefined,
       },
     });
   }

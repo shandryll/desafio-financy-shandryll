@@ -21,15 +21,31 @@ export class TransactionService {
         category: { connect: { id: data.categoryId } },
         user: { connect: { id: userId } },
       },
+      include: {
+        category: true,
+        user: true,
+      },
     });
   }
 
   async listTransactionsByUser(userId: string) {
-    return prismaClient.transaction.findMany({ where: { userId } });
+    return prismaClient.transaction.findMany({
+      where: { userId },
+      include: {
+        category: true,
+        user: true,
+      },
+    });
   }
 
   async findTransaction(id: string) {
-    const tx = await prismaClient.transaction.findUnique({ where: { id } });
+    const tx = await prismaClient.transaction.findUnique({
+      where: { id },
+      include: {
+        category: true,
+        user: true,
+      },
+    });
     if (!tx) throw new Error("Transaction not found");
     return tx;
   }

@@ -11,6 +11,9 @@ export class UserModel {
   @Field(() => String)
   email!: string;
 
+  @Field(() => String)
+  role!: string;
+
   @Field(() => String, { nullable: true })
   password?: string;
 

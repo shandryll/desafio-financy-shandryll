@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
@@ -27,6 +28,7 @@ async function main() {
         name: "Administrator",
         email: "admin@email.com",
         password: hashedPassword,
+        role: "ADMIN",
       },
     });
   }
