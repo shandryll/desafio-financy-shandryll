@@ -1,4 +1,3 @@
-// Modal de criação de transação - Esqueleto
 import {
   Dialog,
   DialogContent,
@@ -28,16 +27,16 @@ export function CreateTransactionDialog({
 }: CreateTransactionDialogProps) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
-  const [type, setType] = useState("EXPENSE");
+  const [type, setType] = useState<"expense" | "revenue">("expense");
   const [date, setDate] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
-    refetchQueries: [{ query: LIST_MY_TRANSACTIONS }],
+    refetchQueries: ["ListTransaction"],
     onCompleted: () => {
       toast.success("Transação criada com sucesso!");
       setDescription("");
       setAmount("");
-      setType("EXPENSE");
+      setType("expense");
       setDate("");
       setCategoryId("");
       onOpenChange(false);
@@ -52,14 +51,15 @@ export function CreateTransactionDialog({
     e.preventDefault();
     setError(null);
     try {
+      const valueInCents = Math.round(parseFloat(amount) * 100);
       await createTransaction({
         variables: {
           data: {
-            description,
-            amount: parseFloat(amount),
+            description: description || "Sem descrição",
+            value: valueInCents,
             type,
-            date,
-            categoryId,
+            date: date ? new Date(date).toISOString() : new Date().toISOString(),
+            category_id: categoryId,
           },
         },
       });
@@ -85,11 +85,11 @@ export function CreateTransactionDialog({
               type="button"
               variant="ghost"
               className={`flex-1 h-12 text-base font-semibold rounded-lg border ${
-                type === "EXPENSE"
+                type === "expense"
                   ? "border-red-500 text-red-600 bg-white"
                   : "border-transparent text-gray-500 bg-gray-50"
               }`}
-              onClick={() => setType("EXPENSE")}
+              onClick={() => setType("expense")}
             >
               Despesa
             </Button>
@@ -97,11 +97,11 @@ export function CreateTransactionDialog({
               type="button"
               variant="ghost"
               className={`flex-1 h-12 text-base font-semibold rounded-lg border ${
-                type === "INCOME"
+                type === "revenue"
                   ? "border-green-600 text-green-700 bg-white"
                   : "border-transparent text-gray-500 bg-gray-50"
               }`}
-              onClick={() => setType("INCOME")}
+              onClick={() => setType("revenue")}
             >
               Receita
             </Button>
@@ -160,9 +160,9 @@ export function CreateTransactionDialog({
             >
               <option value="">Selecione</option>
               {loadingCategories && <option>Carregando...</option>}
-              {categoriesData?.listCategories?.map((cat: any) => (
+              {categoriesData?.listCategory?.map((cat: any) => (
                 <option key={cat.id} value={cat.id}>
-                  {cat.name}
+                  {cat.title}
                 </option>
               ))}
             </select>

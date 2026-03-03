@@ -7,34 +7,36 @@ export const CREATE_TRANSACTION = gql`
       type
       description
       date
-      amount
+      value
+      category_id
       category {
         id
-        name
+        title
       }
       user {
         id
-        name
+        full_name
       }
     }
   }
 `;
 
 export const UPDATE_TRANSACTION = gql`
-  mutation UpdateTransaction($id: String!, $data: UpdateTransactionInput!) {
-    updateTransaction(id: $id, data: $data) {
+  mutation UpdateTransaction($data: UpdateTransactionInput!, $id: String!) {
+    updateTransaction(data: $data, id: $id) {
       id
       type
       description
       date
-      amount
+      value
+      category_id
       category {
         id
-        name
+        title
       }
       user {
         id
-        name
+        full_name
       }
     }
   }
@@ -50,16 +52,26 @@ export const CREATE_CATEGORY = gql`
   mutation CreateCategory($data: CreateCategoryInput!) {
     createCategory(data: $data) {
       id
-      name
+      title
+      description
+      icon
+      color
+      created_at
+      updated_at
     }
   }
 `;
 
 export const UPDATE_CATEGORY = gql`
-  mutation UpdateCategory($id: String!, $data: UpdateCategoryInput!) {
-    updateCategory(id: $id, data: $data) {
+  mutation UpdateCategory($data: UpdateCategoryInput!, $id: String!) {
+    updateCategory(data: $data, id: $id) {
       id
-      name
+      title
+      description
+      icon
+      color
+      created_at
+      updated_at
     }
   }
 `;

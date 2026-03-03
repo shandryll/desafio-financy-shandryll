@@ -1,4 +1,3 @@
-// Modal de criação de categoria - Esqueleto
 import {
   Dialog,
   DialogContent,
@@ -32,7 +31,7 @@ export function CreateCategoryDialog({
   const [icon, setIcon] = useState(CATEGORY_ICONS[0]);
   const [color, setColor] = useState(CATEGORY_COLORS[0]);
   const [createCategory, { loading }] = useMutation(CREATE_CATEGORY, {
-    refetchQueries: [{ query: LIST_CATEGORIES }],
+    refetchQueries: ["ListCategory"],
     onCompleted: () => {
       toast.success("Categoria criada com sucesso!");
       setName("");
@@ -47,7 +46,14 @@ export function CreateCategoryDialog({
     setError(null);
     try {
       await createCategory({
-        variables: { data: { name, description, icon, color } },
+        variables: {
+          data: {
+            title: name,
+            description: description || undefined,
+            icon,
+            color,
+          },
+        },
       });
     } catch (err: any) {
       setError(err.message || "Erro ao criar categoria");
@@ -111,7 +117,7 @@ export function CreateCategoryDialog({
                   type="button"
                   key={c}
                   className={`w-7 h-7 rounded-full border-2 flex items-center justify-center ${color === c ? "ring-2 ring-primary" : ""}`}
-                  style={{ background: c }}
+                  style={{ background: `var(--color-${c}-base)` }}
                   onClick={() => setColor(c)}
                   aria-label={c}
                 >

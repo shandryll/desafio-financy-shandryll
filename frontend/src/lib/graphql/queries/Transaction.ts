@@ -1,20 +1,22 @@
 import { gql } from "@apollo/client";
 
 export const LIST_MY_TRANSACTIONS = gql`
-  query ListMyTransactions {
-    listMyTransactions {
+  query ListTransaction {
+    listTransaction {
       id
       type
       description
       date
-      amount
+      value
+      category_id
+      user_id
       category {
         id
-        name
+        title
       }
       user {
         id
-        name
+        full_name
       }
     }
   }

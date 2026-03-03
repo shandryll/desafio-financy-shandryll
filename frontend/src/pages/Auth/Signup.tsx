@@ -28,7 +28,7 @@ export function Signup() {
 
     try {
       const signupMutate = await signup({
-        name,
+        full_name: name,
         email,
         password,
       })

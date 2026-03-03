@@ -1,5 +1,6 @@
 import { prismaClient } from "../../prisma/prisma";
-import { CreateUserInput, UpdateUserInput } from "../dtos/input/user.input";
+import { CreateUserInput, UpdateUserInput, UpdateProfileInput } from "../dtos/input/user.input";
+import { hashPassword } from "../utils/hash";
 
 export class UserService {
   async createUser(data: CreateUserInput) {
@@ -9,12 +10,26 @@ export class UserService {
       },
     });
     if (findUser) throw new Error("User already registered!");
-
+    const hash = data.password ? await hashPassword(data.password) : undefined;
     return prismaClient.user.create({
       data: {
-        name: data.name,
+        name: data.full_name,
         email: data.email,
-        role: data.role ?? "USER",
+        password: hash ?? undefined,
+      },
+    });
+  }
+
+  async updateProfile(data: UpdateProfileInput, id: string) {
+    const user = await prismaClient.user.findUnique({
+      where: { id },
+    });
+    if (!user) throw new Error("User not found");
+    return prismaClient.user.update({
+      where: { id },
+      data: {
+        name: data.full_name ?? undefined,
+        email: data.email ?? undefined,
       },
     });
   }
@@ -33,7 +48,7 @@ export class UserService {
     return prismaClient.user.findMany();
   }
 
-  async updateUser(id: string, data: UpdateUserInput) {
+  async updateUser(id: string, data: UpdateUserInput & UpdateProfileInput) {
     const user = await prismaClient.user.findUnique({
       where: { id },
     });

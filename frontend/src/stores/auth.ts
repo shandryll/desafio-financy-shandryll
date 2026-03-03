@@ -53,11 +53,10 @@ export const useAuthStore = create<AuthState>() (
                 set({
                   user: {
                     id: user.id,
-                    name: user.name,
+                    name: (user as { full_name?: string }).full_name ?? (user as { name?: string }).name ?? "",
                     email: user.email,
-                    role: user.role,
-                    createdAt: user.createdAt,
-                    updatedAt: user.updatedAt
+                    createdAt: (user as { created_at?: string }).created_at ?? (user as { createdAt?: string }).createdAt,
+                    updatedAt: (user as { updated_at?: string }).updated_at ?? (user as { updatedAt?: string }).updatedAt
                   },
                   token,
                   isAuthenticated: true
@@ -79,7 +78,7 @@ export const useAuthStore = create<AuthState>() (
                 mutation: REGISTER,
                 variables: {
                   data: {
-                      name: registerData.name,
+                      full_name: registerData.full_name,
                       email: registerData.email,
                       password: registerData.password
                   }
@@ -87,14 +86,14 @@ export const useAuthStore = create<AuthState>() (
               })
               if(data?.register){
                 const { token, user } = data.register
+                const u = user as { id: string; full_name?: string; name?: string; email: string; created_at?: string; updated_at?: string }
                 set({
                   user: {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    createdAt: user.createdAt,
-                    updatedAt: user.updatedAt
+                    id: u.id,
+                    name: u.full_name ?? u.name ?? "",
+                    email: u.email,
+                    createdAt: u.created_at,
+                    updatedAt: u.updated_at
                   },
                   token,
                   isAuthenticated: true

@@ -10,6 +10,7 @@ import { UserResolver } from "./resolvers/user.resolver";
 import { CategoryResolver } from "./resolvers/category.resolver";
 import { TransactionResolver } from "./resolvers/transaction.resolver";
 import { buildContext } from "./graphql/context";
+import "./graphql/enums";
 
 async function bootstrap() {
   const app = express();

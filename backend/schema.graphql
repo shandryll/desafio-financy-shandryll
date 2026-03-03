@@ -4,29 +4,37 @@
 # -----------------------------------------------
 
 type CategoryModel {
-  createdAt: DateTimeISO!
+  color: String
+  created_at: DateTimeISO
+  description: String!
+  icon: String
   id: ID!
-  name: String!
-  updatedAt: DateTimeISO!
-  user: UserModel!
+  title: String!
+  transactions: [TransactionModel!]
+  updated_at: DateTimeISO
+  user: UserModel
+  user_id: String!
 }
 
 input CreateCategoryInput {
-  name: String!
+  color: String!
+  description: String
+  icon: String!
+  title: String!
 }
 
 input CreateTransactionInput {
-  amount: Float!
-  categoryId: String!
-  date: String!
-  description: String
+  category_id: String!
+  date: DateTimeISO!
+  description: String!
   type: TransactionType!
+  value: Float!
 }
 
 input CreateUserInput {
   email: String!
-  name: String!
-  role: String
+  full_name: String!
+  password: String!
 }
 
 """
@@ -51,26 +59,23 @@ type Mutation {
   createUser(data: CreateUserInput!): UserModel!
   deleteCategory(id: String!): Boolean!
   deleteTransaction(id: String!): Boolean!
-  deleteUser(id: String!): Boolean!
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
   updateCategory(data: UpdateCategoryInput!, id: String!): CategoryModel!
+  updateProfile(data: UpdateProfileInput!, id: String!): UserModel!
   updateTransaction(data: UpdateTransactionInput!, id: String!): TransactionModel!
   updateUser(data: UpdateUserInput!, id: String!): UserModel!
 }
 
 type Query {
-  getCategory(id: String!): CategoryModel!
-  getTransaction(id: String!): TransactionModel!
   getUser(id: String!): UserModel!
-  listCategories: [CategoryModel!]!
-  listMyTransactions: [TransactionModel!]!
-  listUsers: [UserModel!]!
+  listCategory: [CategoryModel!]!
+  listTransaction: [TransactionModel!]!
 }
 
 input RegisterInput {
   email: String!
-  name: String!
+  full_name: String!
   password: String!
 }
 
@@ -81,31 +86,42 @@ type RegisterOutput {
 }
 
 type TransactionModel {
-  amount: Float!
-  category: CategoryModel!
+  category: CategoryModel
+  category_id: String!
+  created_at: DateTimeISO
   date: DateTimeISO!
-  description: String
+  description: String!
   id: ID!
   type: TransactionType!
-  user: UserModel!
+  updated_at: DateTimeISO
+  user: UserModel
+  user_id: String!
+  value: Float!
 }
 
-"""Transaction type: Expense or Income"""
 enum TransactionType {
-  EXPENSE
-  INCOME
+  expense
+  revenue
 }
 
 input UpdateCategoryInput {
-  name: String
+  color: String
+  description: String
+  icon: String
+  title: String
+}
+
+input UpdateProfileInput {
+  email: String
+  full_name: String
 }
 
 input UpdateTransactionInput {
-  amount: Float
-  categoryId: String
-  date: String
+  category_id: String
+  date: DateTimeISO
   description: String
   type: TransactionType
+  value: Float
 }
 
 input UpdateUserInput {
@@ -114,11 +130,10 @@ input UpdateUserInput {
 }
 
 type UserModel {
-  createdAt: DateTimeISO!
+  created_at: DateTimeISO
   email: String!
+  full_name: String!
   id: ID!
-  name: String!
   password: String
-  role: String!
-  updatedAt: DateTimeISO!
+  updated_at: DateTimeISO
 }

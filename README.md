@@ -3,6 +3,32 @@
 
 </aside>
 
+## Instalação
+
+Requisito: Node.js 18+
+
+**Backend** (terminal 1) — http://localhost:4000
+
+| Comando |
+|---------|
+| `cd backend` |
+| `npm install` |
+| `cp .env.example .env` |
+| `npm run migrate` |
+| `npm run seed` |
+| `npm run dev` |
+
+**Frontend** (terminal 2) — http://localhost:5173
+
+| Comando |
+|---------|
+| `cd frontend` |
+| `npm install` |
+| `cp .env.example .env` |
+| `npm run dev` |
+
+---
+
 ## Introdução
 
 Faaaaaaala, dev! Parabéns por chegar até aqui! 💜

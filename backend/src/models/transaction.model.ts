@@ -3,41 +3,43 @@ import {
   GraphQLISODateTime,
   ID,
   ObjectType,
-  registerEnumType,
 } from "type-graphql";
+import { TransactionTypeGql } from "../graphql/enums";
 import { CategoryModel } from "./category.model";
 import { UserModel } from "./user.model";
-
-export enum TransactionType {
-  EXPENSE = "EXPENSE",
-  INCOME = "INCOME",
-}
-
-registerEnumType(TransactionType, {
-  name: "TransactionType",
-  description: "Transaction type: Expense or Income",
-});
 
 @ObjectType()
 export class TransactionModel {
   @Field(() => ID)
   id!: string;
 
-  @Field(() => TransactionType)
-  type!: TransactionType;
+  @Field(() => String)
+  description!: string;
 
-  @Field(() => String, { nullable: true })
-  description?: string;
+  @Field(() => TransactionTypeGql)
+  type!: TransactionTypeGql;
 
   @Field(() => GraphQLISODateTime)
   date!: Date;
 
   @Field(() => Number)
-  amount!: number;
+  value!: number;
 
-  @Field(() => CategoryModel)
-  category!: CategoryModel;
+  @Field(() => String)
+  user_id!: string;
 
-  @Field(() => UserModel)
-  user!: UserModel;
+  @Field(() => UserModel, { nullable: true })
+  user?: UserModel;
+
+  @Field(() => String)
+  category_id!: string;
+
+  @Field(() => CategoryModel, { nullable: true })
+  category?: CategoryModel;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  created_at?: Date;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  updated_at?: Date;
 }

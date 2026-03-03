@@ -29,7 +29,10 @@ model User {
 
 model Category {
   id          String        @id @default(uuid())
-  name        String
+  title       String
+  description String?
+  icon        String?
+  color       String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   Transaction Transaction[]

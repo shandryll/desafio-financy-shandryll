@@ -1,8 +1,9 @@
-import { UserModel } from "../models/user.model";
 import { prismaClient } from "../../prisma/prisma";
 import { LoginInput, RegisterInput } from "../dtos/input/auth.input";
 import { comparePassword, hashPassword } from "../utils/hash";
 import { signJwt } from "../utils/jwt";
+import { mapUserToGql } from "../utils/mapToGql";
+import type { User } from "@prisma/client";
 
 export class AuthService {
   async login(data: LoginInput) {
@@ -29,7 +30,7 @@ export class AuthService {
 
     const user = await prismaClient.user.create({
       data: {
-        name: data.name,
+        name: data.full_name,
         email: data.email,
         password: hash,
       },
@@ -37,9 +38,9 @@ export class AuthService {
     return this.gerenerateTokens(user);
   }
 
-  gerenerateTokens(user: UserModel) {
+  gerenerateTokens(user: User) {
     const token = signJwt({ id: user.id, email: user.email }, "1d");
-    const refreshToken = signJwt({ id: user.id, email: user.email }, "1d");
-    return { token, refreshToken, user };
+    const refreshToken = signJwt({ id: user.id, email: user.email }, "15d");
+    return { token, refreshToken, user: mapUserToGql(user) };
   }
 }

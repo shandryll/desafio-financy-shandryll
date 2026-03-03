@@ -7,11 +7,10 @@ export const LOGIN = gql`
       refreshToken
       user {
         id
-        name
+        full_name
         email
-        role
-        createdAt
-        updatedAt
+        created_at
+        updated_at
       }
     }
   }

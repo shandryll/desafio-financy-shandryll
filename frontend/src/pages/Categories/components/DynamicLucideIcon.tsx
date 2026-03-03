@@ -1,4 +1,3 @@
-// Utilitário para renderizar ícones do Lucide dinamicamente pelo nome
 import * as LucideIcons from "lucide-react";
 import { FC } from "react";
 

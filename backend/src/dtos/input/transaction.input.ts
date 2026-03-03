@@ -1,38 +1,38 @@
-import { Field, InputType } from "type-graphql";
-import { TransactionType } from "../../models/transaction.model";
+import { Field, GraphQLISODateTime, InputType } from "type-graphql";
+import { TransactionTypeGql } from "../../graphql/enums";
 
 @InputType()
 export class CreateTransactionInput {
-  @Field(() => TransactionType)
-  type!: TransactionType;
-
-  @Field(() => String, { nullable: true })
-  description?: string;
+  @Field(() => TransactionTypeGql)
+  type!: TransactionTypeGql;
 
   @Field(() => String)
-  date!: string;
+  description!: string;
+
+  @Field(() => GraphQLISODateTime)
+  date!: Date;
 
   @Field(() => Number)
-  amount!: number;
+  value!: number;
 
   @Field(() => String)
-  categoryId!: string;
+  category_id!: string;
 }
 
 @InputType()
 export class UpdateTransactionInput {
-  @Field(() => TransactionType, { nullable: true })
-  type?: TransactionType;
+  @Field(() => TransactionTypeGql, { nullable: true })
+  type?: TransactionTypeGql;
 
   @Field(() => String, { nullable: true })
   description?: string;
 
-  @Field(() => String, { nullable: true })
-  date?: string;
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  date?: Date;
 
   @Field(() => Number, { nullable: true })
-  amount?: number;
+  value?: number;
 
   @Field(() => String, { nullable: true })
-  categoryId?: string;
+  category_id?: string;
 }

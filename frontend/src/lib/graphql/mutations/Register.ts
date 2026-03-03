@@ -7,10 +7,10 @@ export const REGISTER = gql`
       refreshToken
       user {
         id
-        name
+        full_name
         email
-        createdAt
-        updatedAt
+        created_at
+        updated_at
       }
     }
   }

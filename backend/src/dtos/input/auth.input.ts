@@ -3,7 +3,7 @@ import { Field, InputType } from 'type-graphql'
 @InputType()
 export class RegisterInput {
   @Field(() => String)
-  name!: string
+  full_name!: string
 
   @Field(() => String)
   email!: string

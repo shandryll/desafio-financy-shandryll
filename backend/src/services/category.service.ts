@@ -7,7 +7,13 @@ import {
 export class CategoryService {
   async createCategory(userId: string, data: CreateCategoryInput) {
     return prismaClient.category.create({
-      data: { name: data.name, user: { connect: { id: userId } } },
+      data: {
+        title: data.title,
+        description: data.description ?? null,
+        icon: data.icon ?? null,
+        color: data.color ?? null,
+        user: { connect: { id: userId } },
+      },
     });
   }
 
@@ -28,7 +34,12 @@ export class CategoryService {
     if (category.userId !== userId) throw new Error("Action not authorized");
     return prismaClient.category.update({
       where: { id },
-      data: { name: data.name ?? undefined },
+      data: {
+        title: data.title ?? undefined,
+        description: data.description !== undefined ? data.description : undefined,
+        icon: data.icon ?? undefined,
+        color: data.color ?? undefined,
+      },
     });
   }
 

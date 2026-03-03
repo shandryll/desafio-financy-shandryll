@@ -6,20 +6,17 @@ export class UserModel {
   id!: string;
 
   @Field(() => String)
-  name!: string;
+  full_name!: string;
 
   @Field(() => String)
   email!: string;
 
-  @Field(() => String)
-  role!: string;
-
   @Field(() => String, { nullable: true })
   password?: string;
 
-  @Field(() => GraphQLISODateTime)
-  createdAt!: Date;
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  created_at?: Date;
 
-  @Field(() => GraphQLISODateTime)
-  updatedAt!: Date;
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  updated_at?: Date;
 }

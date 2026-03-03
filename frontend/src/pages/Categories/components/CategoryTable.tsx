@@ -18,8 +18,8 @@ export function CategoryTable({
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr>
-            <th className="px-4 py-2">Nome</th>
-            <th className="px-4 py-2">Tipo</th>
+            <th className="px-4 py-2">Título</th>
+            <th className="px-4 py-2">Descrição</th>
             <th className="px-4 py-2">Ações</th>
           </tr>
         </thead>
@@ -45,10 +45,8 @@ export function CategoryTable({
           ) : (
             categories.map((cat) => (
               <tr key={cat.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-2">{cat.name}</td>
-                <td className="px-4 py-2">
-                  {cat.type === "INCOME" ? "Receita" : "Despesa"}
-                </td>
+                <td className="px-4 py-2">{cat.title}</td>
+                <td className="px-4 py-2">{cat.description || "-"}</td>
                 <td className="px-4 py-2 flex gap-2">
                   <button
                     onClick={() => onEdit(cat.id)}

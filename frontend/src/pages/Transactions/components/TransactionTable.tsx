@@ -1,4 +1,3 @@
-// Tabela de transações - Esqueleto
 import { Transaction } from "../../../types";
 
 interface TransactionTableProps {
@@ -53,16 +52,21 @@ export function TransactionTable({
                 <td className="px-4 py-2">
                   <span
                     className={
-                      tx.type === "INCOME"
+                      tx.type === "revenue" || tx.type === "INCOME"
                         ? "text-green-600 font-semibold"
                         : "text-red-600 font-semibold"
                     }
                   >
-                    {tx.type === "INCOME" ? "Receita" : "Despesa"}
+                    {tx.type === "revenue" || tx.type === "INCOME" ? "Receita" : "Despesa"}
                   </span>
                 </td>
-                <td className="px-4 py-2 font-medium">R$ {tx.amount}</td>
-                <td className="px-4 py-2">{tx.category?.name}</td>
+                <td className="px-4 py-2 font-medium">
+                  {((tx.value ?? (tx as { amount?: number }).amount ?? 0) / 100).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </td>
+                <td className="px-4 py-2">{tx.category?.title}</td>
                 <td className="px-4 py-2">
                   {new Date(tx.date).toLocaleDateString()}
                 </td>

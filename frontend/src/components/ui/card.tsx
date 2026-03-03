@@ -36,7 +36,6 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      // increased size and looser line-height to match Figma title spacing
       "text-3xl font-bold leading-tight",
       className,
     )}

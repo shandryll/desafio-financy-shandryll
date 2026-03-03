@@ -1,17 +1,30 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/auth";
-import logoIcon from "@/assets/logo-icon.svg";
-import { Button } from "./ui/button";
-import { Lightbulb, LogOut, Users } from "lucide-react";
+import logo from "@/assets/logo.svg";
+import icon from "@/assets/icon.svg";
 import { Avatar, AvatarFallback } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
+
+const navBars = [
+  { name: "Dashboard", url: "/" },
+  { name: "Transações", url: "/transactions" },
+  { name: "Categorias", url: "/categories" },
+] as const;
 
 export function Header() {
   const { user, logout, isAuthenticated } = useAuthStore();
   const location = useLocation();
   const navigate = useNavigate();
-  const isDashboardPage = location.pathname === "/";
-  const isTransactionsPage = location.pathname === "/transactions";
-  const isCategoriesPage = location.pathname === "/categories";
+  const [screenWidth, setScreenWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -19,61 +32,40 @@ export function Header() {
   };
 
   return (
-    <div className="w-full px-16 pt-6">
-      {isAuthenticated && (
-        <div className="flex justify-between w-full">
-          <div className="min-w-48">
-            <img src={logoIcon} />
+    <header className="sticky top-0 w-full px-4 bg-white border-b border-gray-200 flex items-center justify-between md:px-12 py-4 z-10">
+      {isAuthenticated ? (
+        <>
+          <div>
+            <img src={screenWidth > 768 ? logo : icon} alt="Financy" className="h-8 md:h-8" />
           </div>
-          <div className="flex items-center gap-4">
-            <Link to="/">
-              <Button
-                size="sm"
-                className="gap-2"
-                variant={isDashboardPage ? "default" : "ghost"}
-              >
-                Dashboard
-              </Button>
-            </Link>
-            <Link to="/transactions">
-              <Button
-                size="sm"
-                className="gap-2"
-                variant={isTransactionsPage ? "default" : "ghost"}
-              >
-                Transações
-              </Button>
-            </Link>
-            <Link to="/categories">
-              <Button
-                size="sm"
-                className="gap-2"
-                variant={isCategoriesPage ? "default" : "ghost"}
-              >
-                Categorias
-              </Button>
-            </Link>
+          <div className="flex-1 flex items-center justify-center px-4">
+            <nav className="flex items-center justify-center gap-5">
+              {navBars.map((nav) => (
+                <Link
+                  key={nav.url}
+                  to={nav.url}
+                  data-active={location.pathname === nav.url}
+                  className="text-gray-600 text-xs md:text-sm data-[active=true]:text-[#1F6F43] hover:text-[#1F6F43] no-underline"
+                >
+                  {nav.name}
+                </Link>
+              ))}
+            </nav>
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2">
-              <Avatar>
-                <AvatarFallback className="bg-zinc-950 text-primary-foreground">
-                  {user?.name?.charAt(0)}
+            <Link to="/profile" className="rounded-full">
+              <Avatar className="h-9 w-9 hover:opacity-90 cursor-pointer">
+                <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                  {user?.name?.charAt(0)?.toUpperCase() ?? "?"}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex flex-col">
-                <span className="text-sm font-medium">{user?.name}</span>
-                <span className="text-xs text-muted-foreground">
-                  {user?.email}
-                </span>
-              </div>
-            </div>
-            <Button variant="ghost" size="icon" onClick={handleLogout}>
+            </Link>
+            <Button variant="ghost" size="icon" onClick={handleLogout} aria-label="Sair">
               <LogOut className="w-5 h-5" />
             </Button>
           </div>
-        </div>
-      )}
-    </div>
+        </>
+      ) : null}
+    </header>
   );
 }

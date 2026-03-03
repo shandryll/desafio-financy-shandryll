@@ -1,10 +1,20 @@
 import { gql } from "@apollo/client";
 
 export const LIST_CATEGORIES = gql`
-  query ListCategories {
-    listCategories {
+  query ListCategory {
+    listCategory {
       id
-      name
+      title
+      description
+      icon
+      color
+      created_at
+      updated_at
+      user_id
+      transactions {
+        id
+        value
+      }
     }
   }
 `;
